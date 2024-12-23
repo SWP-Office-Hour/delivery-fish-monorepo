@@ -1,4 +1,4 @@
-import { UserRole } from 'src/users/models/user.entity';
+import { UserRole } from '../../users/models/user.entity';
 
 export interface JwtPayload {
   user_id: string;
