@@ -12,7 +12,7 @@ export const test = c.router(
   {
     getAll: {
       method: "GET",
-      path: "/api/users",
+      path: "/api/tests",
       responses: {
         200: Test.array(),
         // 404: object({ message: string() }),

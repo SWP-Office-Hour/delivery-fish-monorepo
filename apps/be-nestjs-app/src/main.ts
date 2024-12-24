@@ -13,7 +13,7 @@ import { test } from '../../contract/test.contract';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const document = generateOpenApi({user, test}, {
+  const document = generateOpenApi({ user ,test}, {
     info: {
       title: 'Posts API',
       version: '1.0.0',

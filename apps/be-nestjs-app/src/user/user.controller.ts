@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller, Param
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -9,6 +10,7 @@ import { User, user } from '../../../contract/user.contract';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+
   @TsRestHandler(user.getAll)
   async getAll() {
     return tsRestHandler(user.getAll,  async () => {
@@ -18,11 +20,12 @@ export class UserController {
   }
 
   @TsRestHandler(user.create)
-  async testPost({ body }) {
+  async testPost(@Body() body) {
     return tsRestHandler(user.create, async ({ body }) => {
       const newUser = await this.userService.create(body);
       return { status: 201, body: newUser };
     });
+
   }
 
   @TsRestHandler(user.getOne)

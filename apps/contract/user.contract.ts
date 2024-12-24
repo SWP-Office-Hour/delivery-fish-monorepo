@@ -15,7 +15,6 @@ export const User = z.object({
 export type User = z.infer<typeof User>;
 
 export const user = c.router({
-
     getAll: {
       method: "GET",
       path: "/api/users",
@@ -23,6 +22,7 @@ export const user = c.router({
         200: User.array(),
         // 404: object({ message: string() }),
       }
+      ,summary: "Get all users",
     },
     create: {
       method: "POST",
@@ -31,7 +31,9 @@ export const user = c.router({
       responses: {
         200: User.array(),
         // 404: object({ message: string() }),
-      }
+      },
+      summary: "Create a user",
+      description: "Create a user with the given data"
     },
     getOne: {
       method: "GET",
@@ -40,7 +42,8 @@ export const user = c.router({
       responses: {
         200: User,
         // 404: object({ message: string() }),
-      }
+      },
+      summary: "Get a user by id"
     }
 
 })
