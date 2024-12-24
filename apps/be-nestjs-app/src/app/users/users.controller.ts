@@ -16,10 +16,14 @@ import {
   RegisterReqBody,
 } from './models/users.request';
 import { UserRole } from './models/user.entity';
-import { Request } from 'express';
 import { ApiBody, ApiHeader, ApiResponse } from '@nestjs/swagger';
 import { Roles } from '../utils/decorators/role.decorator';
-import { AccessTokenAuthGuard, RefreshTokenAuthGuard, RoleAuthGuard } from '../auth/auth.guard';
+import {
+  AccessTokenAuthGuard,
+  RefreshTokenAuthGuard,
+  RoleAuthGuard,
+} from '../auth/auth.guard';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
