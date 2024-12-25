@@ -8,7 +8,7 @@ import {
 import { ChatService } from './chat.service';
 import { Server, Socket } from 'socket.io';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JoinChat, SendMess } from '../../../contract/chat.contract';
+import { JoinChat, SendMess } from '@delivery-fish-monorepo/contract';
 
 @WebSocketGateway()
 export class ChatGateway {

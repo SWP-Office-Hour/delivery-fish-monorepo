@@ -2,10 +2,10 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { generateOpenApi } from '@ts-rest/open-api';
-import { user } from '../../contract/user.contract';
+import { userContract } from '@delivery-fish-monorepo/contract';
 import { SwaggerModule } from '@nestjs/swagger';
 import { SocketIoAdapter } from './socket-io.adapter';
-import { test } from '../../contract/test.contract';
+import { testContract } from '@delivery-fish-monorepo/contract';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,8 +13,8 @@ async function bootstrap() {
   // Combine contracts
   const apiDocument = generateOpenApi(
     {
-      user: user,
-      test: test,
+      user: userContract,
+      test: testContract,
     },
     {
       info: {

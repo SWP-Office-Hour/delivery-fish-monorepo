@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../../../contract/user.contract';
+import { User } from '@delivery-fish-monorepo/contract';
 
 @Injectable()
 export class UserService {
@@ -11,13 +11,13 @@ export class UserService {
     return newUser;
   }
 
-   findAll(): User[] {
+  findAll(): User[] {
     console.log('findAll service');
     console.log(this.users);
     return this.users;
   }
 
   findOne(id: string): User | null {
-    return this.users.find(user => user.id === id) || null;
+    return this.users.find((user) => user.id === id) || null;
   }
 }

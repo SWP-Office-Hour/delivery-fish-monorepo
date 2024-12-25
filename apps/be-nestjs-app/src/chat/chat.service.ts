@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JoinChat, SendMess } from '../../../contract/chat.contract';
+import { JoinChat, SendMess } from '@delivery-fish-monorepo/contract';
 
 @Injectable()
 export class ChatService {

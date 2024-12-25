@@ -1,32 +1,32 @@
 import { Body, Controller, Param, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { tsRestHandler, TsRestHandler } from '@ts-rest/nest';
-import { User, user } from '../../../contract/user.contract';
+import { userContract } from '@delivery-fish-monorepo/contract';
 import { Request } from 'express';
 
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @TsRestHandler(user.getAll)
+  @TsRestHandler(userContract.getAll)
   async getAll() {
-    return tsRestHandler(user.getAll, async () => {
+    return tsRestHandler(userContract.getAll, async () => {
       const users = await this.userService.findAll();
       return { status: 200, body: users };
     });
   }
 
-  @TsRestHandler(user.create)
-  async post(@Body() body, @Req() req:  Request) {
-    return tsRestHandler(user.create, async ({ body }) => {
+  @TsRestHandler(userContract.create)
+  async post(@Body() body, @Req() req: Request) {
+    return tsRestHandler(userContract.create, async ({ body }) => {
       const newUser = await this.userService.create(body);
       return { status: 201, body: newUser };
     });
   }
 
-  @TsRestHandler(user.getOne)
+  @TsRestHandler(userContract.getOne)
   async getOne(@Param() params) {
-    return tsRestHandler(user.getOne, async ({ params }) => {
+    return tsRestHandler(userContract.getOne, async ({ params }) => {
       console.log('params', params);
       const user = await this.userService.findOne(params.id);
       if (user) {
@@ -35,6 +35,7 @@ export class UserController {
       return { status: 404, body: { message: 'User not found' } };
     });
   }
+
   // @TsRestHandler(user.User)
   // async handler() {
   //   return tsRestHandler(userContract.User, {
