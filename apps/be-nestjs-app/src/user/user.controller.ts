@@ -1,42 +1,39 @@
-import {
-  Body,
-  Controller, Param
-} from '@nestjs/common';
+import { Body, Controller, Param, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { tsRestHandler, TsRestHandler } from '@ts-rest/nest';
 import { User, user } from '../../../contract/user.contract';
+import { Request } from 'express';
 
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-
   @TsRestHandler(user.getAll)
   async getAll() {
-    return tsRestHandler(user.getAll,  async () => {
+    return tsRestHandler(user.getAll, async () => {
       const users = await this.userService.findAll();
       return { status: 200, body: users };
-    })
+    });
   }
 
   @TsRestHandler(user.create)
-  async testPost(@Body() body) {
+  async post(@Body() body, @Req() req:  Request) {
     return tsRestHandler(user.create, async ({ body }) => {
       const newUser = await this.userService.create(body);
       return { status: 201, body: newUser };
     });
-
   }
 
   @TsRestHandler(user.getOne)
-  async getOne(@Param() params ) {
-    return tsRestHandler(user.getOne, async ({ params }) => {console.log('params', params);
+  async getOne(@Param() params) {
+    return tsRestHandler(user.getOne, async ({ params }) => {
+      console.log('params', params);
       const user = await this.userService.findOne(params.id);
       if (user) {
         return { status: 200, body: user };
       }
-      return { status: 404, body: { message: 'User not found' } };});
-
+      return { status: 404, body: { message: 'User not found' } };
+    });
   }
   // @TsRestHandler(user.User)
   // async handler() {
