@@ -20,9 +20,7 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  it('/ (GET)', async () => {
-    await request(app.getHttpServer()).get('/').expect(200).expect({
-      message: 'Hello API',
-    });
+  it('/users (GET)', async () => {
+    await request(app.getHttpServer()).get('/users').expect(200);
   });
 });
