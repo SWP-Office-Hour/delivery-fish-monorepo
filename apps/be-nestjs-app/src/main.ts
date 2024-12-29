@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { generateOpenApi } from '@ts-rest/open-api';
-import { userContract } from '@delivery-fish-monorepo/contract';
+import {payosContract, userContract} from '@delivery-fish-monorepo/contract';
 import { SwaggerModule } from '@nestjs/swagger';
 import { SocketIoAdapter } from './socket-io.adapter';
 import { testContract } from '@delivery-fish-monorepo/contract';
@@ -15,6 +15,7 @@ async function bootstrap() {
     {
       user: userContract,
       test: testContract,
+      payos: payosContract,
     },
     {
       info: {
