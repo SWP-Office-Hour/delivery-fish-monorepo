@@ -3,13 +3,18 @@ import { UsersService } from './users.service';
 import { tsRestHandler, TsRestHandler } from '@ts-rest/nest';
 import { userContract } from '@delivery-fish-monorepo/contract';
 import { Request } from 'express';
-import {AuthGuard} from "../auth/auth.guard";
+import { AccessTokenAuthGuard, RoleAuthGuard } from '../auth/auth.guard';
+import { Roles } from '../utils/decorators/role.decorator';
+import { UserRole } from '../users/models/user.entity';
 
 @Controller()
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AccessTokenAuthGuard)
+  //sử dung them middleware
+  @Roles(UserRole.ADMIN, UserRole.MANAGER)
+  @UseGuards(RoleAuthGuard)
   @TsRestHandler(userContract.getAll)
   async getAll() {
     return tsRestHandler(userContract.getAll, async () => {
