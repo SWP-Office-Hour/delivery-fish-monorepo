@@ -1,13 +1,13 @@
 import {Body, Controller, Param, Req, UseGuards} from '@nestjs/common';
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 import { tsRestHandler, TsRestHandler } from '@ts-rest/nest';
 import { userContract } from '@delivery-fish-monorepo/contract';
 import { Request } from 'express';
 import {AuthGuard} from "../auth/auth.guard";
 
 @Controller()
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class UsersController {
+  constructor(private readonly userService: UsersService) {}
 
   @UseGuards(AuthGuard)
   @TsRestHandler(userContract.getAll)

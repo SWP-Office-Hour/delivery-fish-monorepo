@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@delivery-fish-monorepo/contract';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   private users: User[] = [{ id: '1', name: 'John Doe' }];
 
   create(createUserDto: User): User {

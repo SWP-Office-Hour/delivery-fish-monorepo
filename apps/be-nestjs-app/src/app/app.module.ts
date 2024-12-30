@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
+import { UsersModule } from './user/users.module';
 import { ChatModule } from './chat/chat.module';
 import {PayosModule} from "./payos/payos.module";
 import {ConfigModule} from "@nestjs/config";
@@ -10,6 +10,6 @@ import {ConfigModule} from "@nestjs/config";
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: '.env',
-  }),UserModule, ChatModule, PayosModule],
+  }),UsersModule, ChatModule, PayosModule],
 })
 export class AppModule {}
