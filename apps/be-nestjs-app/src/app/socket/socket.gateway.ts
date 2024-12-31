@@ -11,7 +11,7 @@ import { SocketService } from './socket.service';
 import { Socket } from 'socket.io';
 import { Req, UseGuards } from '@nestjs/common';
 import { IsLoggin } from '../auth/auth.guard';
-import { Request } from 'express';
+import { Request, RequestWithJWT } from 'express';
 import { UserRole } from '../users/models/user.entity';
 
 @WebSocketGateway()
@@ -21,7 +21,10 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly socketService: SocketService) {}
 
   @UseGuards(IsLoggin)
-  handleConnection(@ConnectedSocket() client: Socket, @Req() req: Request) {
+  handleConnection(
+    @ConnectedSocket() client: Socket,
+    @Req() req: RequestWithJWT
+  ) {
     if (
       !req.decoded_authorization ||
       req.decoded_authorization.role == UserRole.CUSTOMER
@@ -41,7 +44,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleMessage(
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: any,
-    @Req() req: Request
+    @Req() req: RequestWithJWT
   ) {
     if (req.decoded_authorization.role == UserRole.CUSTOMER) {
       this.socketService.handleMessageFromClient(client, payload);
