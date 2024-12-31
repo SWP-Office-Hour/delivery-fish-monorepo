@@ -18,8 +18,9 @@ import { ROLES_KEY } from '../utils/decorators/role.decorator';
 export class AccessTokenAuthGuard implements CanActivate {
   constructor(
     private readonly jwtUtilsService: JwtUtilsService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService
   ) {}
+
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<RequestWithJWT>();
     const token = request.headers.authorization?.split(' ')[1];
@@ -44,8 +45,9 @@ export class AccessTokenAuthGuard implements CanActivate {
 export class EmailVerifyTokenAuthGuard implements CanActivate {
   constructor(
     private readonly jwtUtilsService: JwtUtilsService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService
   ) {}
+
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<RequestWithJWT>();
     const token = request.query.email_verify_token;
@@ -69,8 +71,9 @@ export class EmailVerifyTokenAuthGuard implements CanActivate {
 export class RefreshTokenAuthGuard implements CanActivate {
   constructor(
     private readonly jwtUtilsService: JwtUtilsService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService
   ) {}
+
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const token = (request.body as LogoutReqBody).refresh_token;
@@ -100,10 +103,11 @@ export class RefreshTokenAuthGuard implements CanActivate {
 @Injectable()
 export class RoleAuthGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
+
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(
       ROLES_KEY,
-      [context.getHandler(), context.getClass()],
+      [context.getHandler(), context.getClass()]
     );
     if (!requiredRoles) {
       return true;
@@ -118,5 +122,28 @@ export class RoleAuthGuard implements CanActivate {
       throw new ForbiddenException("You don't have permission to access");
     }
     return isAllowed;
+  }
+}
+
+@Injectable()
+export class IsLoggin implements CanActivate {
+  constructor(
+    private readonly jwtUtilsService: JwtUtilsService,
+    private readonly configService: ConfigService
+  ) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    const token = request.headers.authorization?.split(' ')[1];
+    try {
+      const decoded_authorization = this.jwtUtilsService.verifyToken({
+        token,
+        secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
+      });
+      (request as Request).decoded_authorization = decoded_authorization;
+      return true;
+    } catch (e) {
+      return true;
+    }
   }
 }
