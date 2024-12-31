@@ -133,14 +133,14 @@ export class IsLoggin implements CanActivate {
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<RequestWithJWT>();
     const token = request.headers.authorization?.split(' ')[1];
     try {
       const decoded_authorization = this.jwtUtilsService.verifyToken({
         token,
         secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
       });
-      (request as Request).decoded_authorization = decoded_authorization;
+      request.decoded_authorization = decoded_authorization;
       return true;
     } catch (e) {
       return true;
