@@ -23,7 +23,7 @@ import {
   RefreshTokenAuthGuard,
   RoleAuthGuard,
 } from '../auth/auth.guard';
-import { Request } from 'express';
+import { Request, RequestWithJWT } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -159,7 +159,7 @@ export class UsersController {
 
   @Post('logout')
   @UseGuards(AccessTokenAuthGuard, RefreshTokenAuthGuard)
-  async logout(@Body() body: LogoutReqBody, @Req() req: Request) {
+  async logout(@Body() body: LogoutReqBody, @Req() req: RequestWithJWT) {
     const { user_id } = req.decoded_authorization;
     const { refresh_token } = body;
     const refresh_token_id = await this.usersService.checkRefreshToken({
@@ -177,7 +177,10 @@ export class UsersController {
 
   @Post('refresh-token')
   @UseGuards(RefreshTokenAuthGuard)
-  async refreshToken(@Body() body: RefreshTokenReqBody, @Req() req: Request) {
+  async refreshToken(
+    @Body() body: RefreshTokenReqBody,
+    @Req() req: RequestWithJWT
+  ) {
     const { user_id } = req.decoded_refresh_token;
     const { refresh_token } = body;
     const refresh_token_id = await this.usersService.checkRefreshToken({
