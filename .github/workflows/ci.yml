@@ -17,19 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     name: export GitHub secrets to Doppler
     steps:
-    - name: Install Doppler CLI
-      uses: dopplerhq/cli-action@v3
-    - name: Upload Secrets to Doppler
-      run: |
-        doppler secrets upload --project "$DOPPLER_TARGET_PROJECT" --config "$DOPPLER_TARGET_CONFIG"  --silent <(echo "$GITHUB_SECRETS" | jq 'del(.github_token, .DOPPLER_TOKEN, .DOPPLER_TARGET_PROJECT, .DOPPLER_TARGET_CONFIG) | with_entries( .key |= ascii_upcase )')
-        echo "Env run success"
-        exit 1
-      shell: bash
-      env:
-        DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-        DOPPLER_TARGET_PROJECT: ${{ secrets.DOPPLER_PROJECT }}
-        DOPPLER_TARGET_CONFIG: ${{ secrets.DOPPLER_CONFIG }}
-        GITHUB_SECRETS: ${{ toJson(secrets) }}
+    - uses: dopplerhq/secrets-fetch-action@v1.2.0
+      id: doppler
+      with:
+        doppler-token: ${{ secrets.DOPPLER_TOKEN }}
+        doppler-project: ${{ secrets.DOPPLER_PROJECT }}
+        doppler-config: ${{ secrets.DOPPLER_CONFIG }}
+    - run: echo "DOPPLER_PROJECT is ${{ steps.doppler.outputs.DOPPLER_PROJECT }} (Doppler meta environment variables are unmasked)"
   main:
     runs-on: ubuntu-latest
     steps:
