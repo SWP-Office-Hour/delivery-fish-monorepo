@@ -6,6 +6,7 @@ import {
   RoleAuthGuard,
 } from './auth.guard';
 import { JwtUtilsModule } from '../utils/jwt/jwtUtils.module';
+import { JwtUtilsService } from '../utils/jwt/jwtUtils.service';
 
 @Module({
   imports: [JwtUtilsModule],
@@ -14,6 +15,7 @@ import { JwtUtilsModule } from '../utils/jwt/jwtUtils.module';
     RoleAuthGuard,
     EmailVerifyTokenAuthGuard,
     RefreshTokenAuthGuard,
+    JwtUtilsService,
   ],
 })
 export class AuthModule {}

@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { LoginReqBody, RegisterReqBody } from './models/users.request';
-import { UserEntity, UserRole } from './models/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { DatabaseService } from '../database/database.service';
 import { JwtUtilsService } from '../utils/jwt/jwtUtils.service';
 import { TokenDto, TokenType } from '../utils/jwt/jwt.dto';
+import { LoginRequest, UserRole } from '@delivery-fish-monorepo/contract';
+import { UserEntity } from './models/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly databaseService: DatabaseService,
     private readonly jwtUtilsService: JwtUtilsService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService
   ) {}
 
   signAccessToken({ user_id, role }: { user_id: string; role: UserRole }) {
@@ -19,7 +20,7 @@ export class UsersService {
       payload: { user_id, role },
       options: {
         expiresIn: this.configService.get<string>(
-          'JWT_ACCESS_TOKEN_EXPIRES_IN',
+          'JWT_ACCESS_TOKEN_EXPIRES_IN'
         ),
       },
       secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
@@ -151,7 +152,7 @@ export class UsersService {
     return { access_token, refresh_token };
   }
 
-  async login(data: LoginReqBody) {
+  async login(data: LoginRequest) {
     const { phone, password } = data;
     const user = await this.databaseService.User.findFirst({
       where: {
@@ -222,7 +223,7 @@ export class UsersService {
     const newExpiresIn = this.jwtUtilsService.generateNewRefreshTokenExpiry({
       created_at: old_refresh_token.created_at,
       old_expires_in: this.configService.get<string>(
-        'JWT_REFRESH_TOKEN_EXPIRES_IN',
+        'JWT_REFRESH_TOKEN_EXPIRES_IN'
       ),
     });
     //create new access token and refresh token
