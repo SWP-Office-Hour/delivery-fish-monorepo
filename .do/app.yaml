@@ -14,9 +14,9 @@ name: monkfish-app
 region: sgp
 services:
 - environment_slug: node-js
-  github:
-    branch: main
-    repo: SWP-Office-Hour/delivery-fish-monorepo
+  image:
+    registry_type: GHCR
+
   http_port: 3000
   instance_count: 1
   instance_size_slug: apps-s-1vcpu-0.5gb
