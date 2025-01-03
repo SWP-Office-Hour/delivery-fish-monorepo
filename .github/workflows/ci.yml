@@ -58,7 +58,7 @@ jobs:
         uses: docker/build-push-action@v6.5.0
         with:
           context: .
-          file: ./Dockerfile
+          file: ./apps/be-nestjs-app/Dockerfile
           push: true
           tags: ghcr.io/${{ steps.string.outputs.lowercase }}:latest
       - name: Deploy the app
