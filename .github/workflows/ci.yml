@@ -49,16 +49,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-#      - name : Build to dist folder before dockerizing
-#        run: nx run be-nestjs-app:build
+      - id: string
+        uses: ASzc/change-string-case-action@v2
+        with:
+          string: ${{ github.repository }}
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6.5.0
         with:
           context: .
           push: true
-          repo_name: ${{ github.repository }}
-          tags: ghcr.io/${{ steps.repo_name.outputs.lowercase }}:latest
+          tags: ghcr.io/${{ steps.string.outputs.lowercase }}:latest
       - name: Deploy the app
         uses: digitalocean/app_action/deploy@v2
         env:
