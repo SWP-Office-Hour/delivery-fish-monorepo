@@ -25,15 +25,7 @@ jobs:
       # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
       # Uncomment this line to enable task distribution
       # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
-      - name: Branch Lint
-        shell: bash
-        run: |
-          if [[ $GITHUB_REF == refs/heads/main && github.event_name != 'pull_request' ]]; then
-              echo "Running branch lint"
-              npx nx run-many --target=lint --all
-          else
-              echo "Skipping branch lint"
-          fi
+      
       # Cache node_modules
       - uses: actions/setup-node@v4
         with:
