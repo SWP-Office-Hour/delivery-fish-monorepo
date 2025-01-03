@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { LoginReqBody, RegisterReqBody } from './models/users.request';
 import { ConfigService } from '@nestjs/config';
 import { DatabaseService } from '../database/database.service';
 import { JwtUtilsService } from '../utils/jwt/jwtUtils.service';
 import { TokenDto, TokenType } from '../utils/jwt/jwt.dto';
-import { LoginRequest, UserRole } from '@delivery-fish-monorepo/contract';
+import {
+  LoginRequest,
+  RegisterRequest,
+  UserRole,
+} from '@delivery-fish-monorepo/contract';
 import { UserEntity } from './models/user.entity';
 
 @Injectable()
@@ -89,6 +92,7 @@ export class UsersService {
         phone,
       },
     });
+
     return result;
   }
 
@@ -125,7 +129,7 @@ export class UsersService {
     return result;
   }
 
-  async register(data: RegisterReqBody) {
+  async register(data: RegisterRequest) {
     const result = await this.databaseService.User.create({
       data: new UserEntity(data),
     });

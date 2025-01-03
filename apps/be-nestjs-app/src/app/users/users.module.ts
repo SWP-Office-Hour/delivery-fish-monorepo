@@ -3,7 +3,6 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { DatabaseService } from '../database/database.service';
 import { JwtUtilsModule } from '../utils/jwt/jwtUtils.module';
-import { JwtUtilsService } from '../utils/jwt/jwtUtils.service';
 
 @Module({
   imports: [JwtUtilsModule],

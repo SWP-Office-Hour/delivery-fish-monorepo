@@ -1,21 +1,29 @@
 import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
 
-export const UserStatusSchema = z.enum(['ACTIVE', 'INACTIVE', 'BANNED']);
+export enum UserRole {
+  ADMIN,
+  SHIPPER,
+  MEDICAL,
+  MANAGER,
+  CUSTOMER,
+  USER,
+}
 
-export type UserStatus = z.infer<typeof UserStatusSchema>;
+// Định nghĩa Status enum
+export enum UserStatus {
+  ACTIVE = 1,
+  INACTIVE = 2,
+  BANNED = 3,
+}
 
-export const UserRoleSchema = z.enum([
-  'ADMIN',
-  'SHIPPER',
-  'MEDICAL',
-  'MANAGER',
-  'CUSTOMER',
-  'USER',
-]);
-export type UserRole = z.infer<typeof UserRoleSchema>;
+// Tạo Zod schema cho role và status
+export const UserRoleSchema = z.nativeEnum(UserRole);
+export const StatusEnum = z.nativeEnum(UserStatus);
 
-const userSchema = z.object({
+// Tạo schema cho việc transform số sang role
+
+export const userSchema = z.object({
   id: z.string(),
   name: z.string(),
   phone: z.string(),
@@ -23,7 +31,7 @@ const userSchema = z.object({
   created_at: z.date(),
   updated_at: z.date().optional(),
   role: UserRoleSchema,
-  status: UserStatusSchema,
+  status: StatusEnum,
 });
 
 export type UserType = z.infer<typeof userSchema>;
@@ -57,6 +65,11 @@ const tokenSchema = z.object({
   refresh_token: z.string().min(1, 'Refresh token is required'),
 });
 
+const refreshTokenReqSchema = z.object({
+  user_id: z.string().min(1, 'User ID is required'),
+  refresh_token: z.string().min(1, 'Refresh token is required'),
+});
+
 // Response schemas
 const authResponseSchema = z.object({
   access_token: z.string(),
@@ -77,21 +90,23 @@ export type RegisterRequest = z.infer<typeof registerSchema>;
 export type LoginRequest = z.infer<typeof loginSchema>;
 export type TokenRequest = z.infer<typeof tokenSchema>;
 export type AuthResponse = z.infer<typeof authResponseSchema>;
+export type RefreshTokenRequest = z.infer<typeof refreshTokenReqSchema>;
 
 // Contract
 export const authContract = c.router({
   register: {
     method: 'POST',
-    path: '/auth/register',
+    path: '/users/auth/register',
     body: registerSchema,
     responses: {
-      201: authResponseSchema,
+      200: authResponseSchema,
       400: messageResponseSchema,
+      401: messageResponseSchema,
     },
   },
   login: {
     method: 'POST',
-    path: '/auth/login',
+    path: '/users/auth/login',
     body: loginSchema,
     responses: {
       200: authResponseSchema,
@@ -100,7 +115,7 @@ export const authContract = c.router({
   },
   logout: {
     method: 'POST',
-    path: '/auth/logout',
+    path: '/users/auth/logout',
     body: tokenSchema,
     responses: {
       200: messageResponseSchema,
@@ -109,7 +124,7 @@ export const authContract = c.router({
   },
   refreshToken: {
     method: 'POST',
-    path: '/auth/refresh',
+    path: '/users/auth/refresh',
     body: tokenSchema,
     responses: {
       200: authResponseSchema,

@@ -11,8 +11,8 @@ import { SocketService } from './socket.service';
 import { Socket } from 'socket.io';
 import { Req, UseGuards } from '@nestjs/common';
 import { IsLoggin } from '../auth/auth.guard';
-import { Request, RequestWithJWT } from 'express';
-import { UserRole } from '../users/models/user.entity';
+import { RequestWithJWT } from 'express';
+import { UserRole } from '@delivery-fish-monorepo/contract';
 
 @WebSocketGateway()
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {

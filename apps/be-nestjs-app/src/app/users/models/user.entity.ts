@@ -1,9 +1,7 @@
 import {
-  UserType,
   UserRole,
-  UserRoleSchema,
   UserStatus,
-  UserStatusSchema,
+  UserType,
 } from '@delivery-fish-monorepo/contract';
 
 export class UserEntity {
@@ -23,8 +21,8 @@ export class UserEntity {
     this.password = userData.password;
     this.created_at = userData.created_at || new Date();
     this.updated_at = userData.updated_at || new Date();
-    this.role = userData.role || UserRoleSchema.enum.USER;
-    this.status = userData.status || UserStatusSchema.enum.ACTIVE;
+    this.role = userData.role || UserRole.USER;
+    this.status = userData.status || UserStatus.ACTIVE;
   }
 }
 
