@@ -1,4 +1,4 @@
-name: CI
+name: CI ON MAIN
 
 on:
   push:
@@ -27,18 +27,39 @@ jobs:
       # Uncomment this line to enable task distribution
       # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
 
-      # Cache node_modules
+      # Cache node_modules????
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - run: npm ci --legacy-peer-deps
-      - run: npx cypress install
-      - uses: nrwl/nx-set-shas@v4
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
+
+      - name: Install dependencies without break package-lock
+        run: npm ci --legacy-peer-deps
+
+      - run: npx cypress install
+
+      - uses: nrwl/nx-set-shas@v4
       # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
-      # - run: npx nx-cloud record -- echo Hello World
+      - run: npx nx-cloud record -- echo Hello World
       # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
       # When you enable task distribution, run the e2e-ci task instead of e2e
       - run: npx nx affected -t lint test build e2e
@@ -53,6 +74,8 @@ jobs:
         uses: ASzc/change-string-case-action@v2
         with:
           string: ${{ github.repository }}
+
+
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6.5.0
@@ -61,6 +84,7 @@ jobs:
           file: ./apps/be-nestjs-app/Dockerfile
           push: true
           tags: ghcr.io/${{ steps.string.outputs.lowercase }}:latest
+
       - name: Deploy the app
         uses: digitalocean/app_action/deploy@v2
         env:

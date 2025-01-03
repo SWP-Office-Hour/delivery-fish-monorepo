@@ -22,4 +22,4 @@ services:
   instance_size_slug: apps-s-1vcpu-0.5gb
   name: delivery-fish-monorepo
   run_command: node main.js
-  source_dir: /dist/apps/be-nestjs-app
+  source_dir: /be-nestjs-app
