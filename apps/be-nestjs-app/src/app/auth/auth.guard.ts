@@ -8,10 +8,10 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
-import { Request, RequestWithJWT } from 'express';
+import { RequestWithJWT } from 'express';
 import { JwtUtilsService } from '../utils/jwt/jwtUtils.service';
 import { LogoutReqBody } from '../users/models/users.request';
-import { UserRole } from '../users/models/user.entity';
+import { UserRole } from '@delivery-fish-monorepo/contract';
 import { ROLES_KEY } from '../utils/decorators/role.decorator';
 
 @Injectable()
