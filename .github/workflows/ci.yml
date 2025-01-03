@@ -49,8 +49,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name : Build to dist folder before dockerizing
-        run: nx run be-nestjs-app:build
+#      - name : Build to dist folder before dockerizing
+#        run: nx run be-nestjs-app:build
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6.5.0
