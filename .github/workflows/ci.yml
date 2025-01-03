@@ -84,15 +84,3 @@ jobs:
           file: ./apps/be-nestjs-app/Dockerfile
           push: true
           tags: registry.digitalocean.com/office-hour/${{ steps.string.outputs.lowercase }}:latest
-
-
-
-#      - name: Deploy the app
-#        uses: digitalocean/app_action/deploy@v2
-#        env:
-#          SAMPLE_DIGEST: ${{ steps.push.outputs.digest }}
-#        with:
-#          token: ${{ secrets.GH_NxCloud }}
-#          print_build_logs: true
-#          print_deploy_logs: true
-#          deploy_pr_preview: true
