@@ -7,10 +7,16 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { generateOpenApi } from '@ts-rest/open-api';
-import { payosContract, authContract } from '@delivery-fish-monorepo/contract';
+import {
+  payosContract,
+  authContract,
+  orderContract,
+  addressContract,
+} from '@delivery-fish-monorepo/contract';
 import { SwaggerModule } from '@nestjs/swagger';
 import { SocketIoAdapter } from './socket-io.adapter';
 import { testContract } from '@delivery-fish-monorepo/contract';
+import * as process from 'node:process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,13 +26,14 @@ async function bootstrap() {
     {
       // user: userContract,
       auth: authContract,
-      test: testContract,
+      // test: testContract,
       payos: payosContract,
+      order: orderContract,
+      address: addressContract,
     },
     {
       info: {
-        title: 'Your API',
-        description: 'API description including WebSocket endpoints',
+        title: 'Office Hour API',
         version: '1.0.0',
       },
       components: {
@@ -44,7 +51,7 @@ async function bootstrap() {
           bearerAuth: [],
         },
       ],
-      servers: [{ url: `http://localhost:3000` }],
+      servers: { url: process.env.BE_URL },
     }
   );
 
@@ -54,7 +61,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
+  Logger.log(`🚀 Application is running on: ` + process.env.BE_URL);
 }
 
 bootstrap();

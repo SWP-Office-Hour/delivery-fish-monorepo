@@ -7,6 +7,7 @@ import {
   LoginRequest,
   RegisterRequest,
   UserRole,
+  UserType,
 } from '@delivery-fish-monorepo/contract';
 import { UserEntity } from './models/user.entity';
 
@@ -171,7 +172,6 @@ export class UsersService {
       this.signAccessToken({ user_id: user.id, role: user.role }),
       this.signRefreshToken({ user_id: user.id, role: user.role }),
     ]);
-
     await this.databaseService.Token.create({
       data: new TokenDto({
         token: refresh_token,
@@ -251,4 +251,14 @@ export class UsersService {
 
     return { access_token, refresh_token };
   }
+
+  //hàm này để lấy thông tin user từ người đang đăng nhập
+  // async getCurrentAccount(): Promise<UserType> {
+  //   const secret = this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET');
+  //   const payLoad = this.jwtUtilsService.decodeAccessToken({ token, secret });
+  //   const user = await this.databaseService.User.findUnique({
+  //     where: { id: payLoad.user_id },
+  //   });
+  //   return user;
+  // }
 }

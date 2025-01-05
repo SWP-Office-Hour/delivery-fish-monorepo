@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
+import { OrderController } from './order.controller';
 import { DatabaseService } from '../database/database.service';
 import { JwtUtilsModule } from '../utils/jwt/jwtUtils.module';
-import { UsersService } from './users.service';
+import { OrderService } from './order.service';
 
 @Module({
   imports: [JwtUtilsModule],
-  controllers: [UsersController],
-  providers: [UsersService, DatabaseService],
+  controllers: [OrderController],
+  providers: [OrderService, DatabaseService],
 })
-export class UsersModule {}
+export class OrderModule {}

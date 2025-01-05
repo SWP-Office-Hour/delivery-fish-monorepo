@@ -34,6 +34,15 @@ export const userSchema = z.object({
   status: StatusEnum,
 });
 
+export const UserTeamSchema = z.object({
+  id: z.string(),
+  team_id: z.string().nullable(),
+  user_id: z.string(),
+  status: z.number(),
+  leave_at: z.date().nullable(),
+  added_to_team_at: z.date(),
+});
+
 export type UserType = z.infer<typeof userSchema>;
 
 const c = initContract();
