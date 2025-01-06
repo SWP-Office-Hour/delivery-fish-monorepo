@@ -1,13 +1,8 @@
-interface UserType {
-  id?: string;
-  name: string;
-  phone: string;
-  password: string;
-  created_at?: Date;
-  updated_at?: Date;
-  role?: UserRole;
-  status?: UserStatus;
-}
+import {
+  UserRole,
+  UserStatus,
+  UserType,
+} from '@delivery-fish-monorepo/contract';
 
 export class UserEntity {
   id?: string;
@@ -41,18 +36,3 @@ updated_at: Date | string
 role: number
 status: number
 */
-
-export enum UserStatus {
-  ACTIVE,
-  INACTIVE,
-  BANNED,
-}
-
-export enum UserRole {
-  ADMIN,
-  SHIPPER,
-  MEDICAL,
-  MANAGER,
-  CUSTOMER,
-  USER,
-}
