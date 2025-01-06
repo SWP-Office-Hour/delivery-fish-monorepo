@@ -44,17 +44,17 @@ async function bootstrap() {
           bearerAuth: [],
         },
       ],
-      servers: [{ url: `http://localhost:3000` }],
+      servers: [{ url: `${process.env.HOST_URL}` }],
     }
   );
 
   SwaggerModule.setup('api', app, apiDocument);
   app.useWebSocketAdapter(new SocketIoAdapter(app));
-  console.log('hi ' + process.env.DB_URL);
+  console.log('hi from ' + process.env.HOST_URL);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
+  Logger.log(`🚀 Application is running on: ${process.env.HOST_URL}`);
 }
 
 bootstrap();
