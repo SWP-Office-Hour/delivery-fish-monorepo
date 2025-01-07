@@ -52,7 +52,7 @@ jobs:
         run: npm list
 
       - name: Install dependencies without break package-lock
-        run: npm ci --legacy-peer-deps
+        run: npm i --legacy-peer-deps
 
       - run: npx cypress install
 
