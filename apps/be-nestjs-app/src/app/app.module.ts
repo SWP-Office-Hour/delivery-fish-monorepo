@@ -10,6 +10,7 @@ import { OrderModule } from './order/order.module';
 import { TeamModule } from './team/team.module';
 import { JwtUtilsService } from './utils/jwt/jwtUtils.service';
 import { JwtUtilsModule } from './utils/jwt/jwtUtils.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { JwtUtilsModule } from './utils/jwt/jwtUtils.module';
     AddressModule,
     // PostModule,
     OrderModule,
+    FileModule,
     // TeamModule,
   ],
   providers: [],

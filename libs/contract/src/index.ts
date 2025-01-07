@@ -7,3 +7,4 @@ export * from './lib/address.contract';
 export * from './lib/order.contract';
 export * from './lib/team.contract';
 export * from './lib/post.contract';
+export * from './lib/file.contract';

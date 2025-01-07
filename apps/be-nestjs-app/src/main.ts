@@ -12,6 +12,7 @@ import {
   authContract,
   orderContract,
   addressContract,
+  fileContract,
 } from '@delivery-fish-monorepo/contract';
 import { SwaggerModule } from '@nestjs/swagger';
 import { SocketIoAdapter } from './socket-io.adapter';
@@ -30,6 +31,7 @@ async function bootstrap() {
       payos: payosContract,
       order: orderContract,
       address: addressContract,
+      file: fileContract,
     },
     {
       info: {
@@ -57,7 +59,6 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, apiDocument);
   app.useWebSocketAdapter(new SocketIoAdapter(app));
-  console.log('hi ' + process.env.DB_URL);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
