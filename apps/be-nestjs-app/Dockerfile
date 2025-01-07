@@ -21,4 +21,6 @@ COPY dist/apps/be-nestjs-app .
 RUN chown -R node:node .
 USER node
 EXPOSE 3000
+# Generate Prisma client during the build phase
+RUN npx prisma generate
 CMD ["dumb-init", "node", "main.js"]

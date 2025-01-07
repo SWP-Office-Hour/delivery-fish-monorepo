@@ -3,6 +3,7 @@ import { UsersModule } from './users/users.module';
 import { ChatModule } from './chat/chat.module';
 import { PayosModule } from './payos/payos.module';
 import { ConfigModule } from '@nestjs/config';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
     UsersModule,
     ChatModule,
     PayosModule,
+    PostsModule,
   ],
 })
 export class AppModule {}
