@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { LoginReqBody, RegisterReqBody } from './models/users.request';
+import { UserEntity } from './models/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { DatabaseService } from '../database/database.service';
 import { JwtUtilsService } from '../utils/jwt/jwtUtils.service';
@@ -9,7 +11,6 @@ import {
   UserRole,
   UserType,
 } from '@delivery-fish-monorepo/contract';
-import { UserEntity } from './models/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -251,14 +252,4 @@ export class UsersService {
 
     return { access_token, refresh_token };
   }
-
-  //hàm này để lấy thông tin user từ người đang đăng nhập
-  // async getCurrentAccount(): Promise<UserType> {
-  //   const secret = this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET');
-  //   const payLoad = this.jwtUtilsService.decodeAccessToken({ token, secret });
-  //   const user = await this.databaseService.User.findUnique({
-  //     where: { id: payLoad.user_id },
-  //   });
-  //   return user;
-  // }
 }

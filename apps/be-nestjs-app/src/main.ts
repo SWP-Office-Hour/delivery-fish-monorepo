@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
@@ -17,7 +12,6 @@ import {
 import { SwaggerModule } from '@nestjs/swagger';
 import { SocketIoAdapter } from './socket-io.adapter';
 import { testContract } from '@delivery-fish-monorepo/contract';
-import * as process from 'node:process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,6 +22,7 @@ async function bootstrap() {
       // user: userContract,
       auth: authContract,
       // test: testContract,
+      test: testContract,
       payos: payosContract,
       order: orderContract,
       address: addressContract,
@@ -53,16 +48,17 @@ async function bootstrap() {
           bearerAuth: [],
         },
       ],
-      servers: { url: process.env.BE_URL },
+      servers: [{ url: `${process.env.HOST_URL}` }],
     }
   );
 
   SwaggerModule.setup('api', app, apiDocument);
   app.useWebSocketAdapter(new SocketIoAdapter(app));
+  console.log('hi from ' + process.env.HOST_URL);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: ` + process.env.BE_URL);
+  Logger.log(`🚀 Application is running on: ${process.env.HOST_URL}`);
 }
 
 bootstrap();
