@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { LoginReqBody, RegisterReqBody } from './models/users.request';
+import { UserEntity } from './models/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { DatabaseService } from '../database/database.service';
 import { JwtUtilsService } from '../utils/jwt/jwtUtils.service';
@@ -7,8 +9,8 @@ import {
   LoginRequest,
   RegisterRequest,
   UserRole,
+  UserType,
 } from '@delivery-fish-monorepo/contract';
-import { UserEntity } from './models/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -171,7 +173,6 @@ export class UsersService {
       this.signAccessToken({ user_id: user.id, role: user.role }),
       this.signRefreshToken({ user_id: user.id, role: user.role }),
     ]);
-
     await this.databaseService.Token.create({
       data: new TokenDto({
         token: refresh_token,

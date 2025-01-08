@@ -1,13 +1,14 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { generateOpenApi } from '@ts-rest/open-api';
-import { payosContract, authContract } from '@delivery-fish-monorepo/contract';
+import {
+  payosContract,
+  authContract,
+  orderContract,
+  addressContract,
+  fileContract,
+} from '@delivery-fish-monorepo/contract';
 import { SwaggerModule } from '@nestjs/swagger';
 import { SocketIoAdapter } from './socket-io.adapter';
 import { testContract } from '@delivery-fish-monorepo/contract';
@@ -20,13 +21,16 @@ async function bootstrap() {
     {
       // user: userContract,
       auth: authContract,
+      // test: testContract,
       test: testContract,
       payos: payosContract,
+      order: orderContract,
+      address: addressContract,
+      file: fileContract,
     },
     {
       info: {
-        title: 'Your API',
-        description: 'API description including WebSocket endpoints',
+        title: 'Office Hour API',
         version: '1.0.0',
       },
       components: {
