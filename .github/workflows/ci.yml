@@ -5,6 +5,7 @@ on:
     branches:
       - main
   pull_request:
+    types: [edited, opened]
 
 permissions:
   contents: read
@@ -39,7 +40,7 @@ jobs:
           cache-name: cache-node-modules
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
+          path: ./node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -52,7 +53,7 @@ jobs:
         run: npm list
 
       - name: Install dependencies without break package-lock
-        run: npm ci --legacy-peer-deps
+        run: npm i --legacy-peer-deps
 
       - run: npx cypress install
 
